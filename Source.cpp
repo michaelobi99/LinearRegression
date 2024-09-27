@@ -1,13 +1,13 @@
 #include <iostream>
 #include <vector>
 
-
 using constVec = const std::vector<float>;
 
 float w = 0.0;
 
 float forward(float x) {
-	return w * x;
+	w = sqrtf(x);
+	return w;
 }
 
 std::vector<float> forward(constVec& x) {
@@ -63,7 +63,6 @@ std::vector<float> sub(constVec& vec1, constVec& vec2) {
 	return result;
 }
 
-
 float gradient(constVec& x, constVec& y, constVec& y_pred) {
 	std::vector<float> x_(std::size(x));
 	std::vector<float> y_(std::size(y));
@@ -76,16 +75,17 @@ float gradient(constVec& x, constVec& y, constVec& y_pred) {
 }
 
 int main() {
-	std::vector<float> x = { 1,2,3,4 };
-	std::vector<float> y = { 2,4,6,8 };
+
+	std::vector<float> x = { 4, 9, 16, 25, 36, 49, 64, 81, 100 };// 121, 144, 169, 196, 225, 256, 289, 324, 361, 400};
+	std::vector<float> y = { 2, 3, 4, 5, 6, 7, 8, 9, 10 };// 11, 12, 13, 14, 15, 16, 17, 18, 19, 20 };
 	std::vector<float> y_pred;
 
-	std::cout << "Prediction before training: f(5) = " << forward(5)<<"\n";
+	std::cout << "Prediction before training: f(3) = " << forward(3)<<"\n";
 
 	//Training
-	float learning_rate = 0.01;
-	unsigned n_iters = 90;
-	float l = 0.01;
+	float learning_rate = 0.0001;
+	unsigned n_iters = 100;
+	float l = 0.0;
 	float dw = 0.0;
 
 	for (auto epoch{ 1u }; epoch <= n_iters; ++epoch) {
@@ -97,5 +97,9 @@ int main() {
 			printf("epoch %d: w = %f, dw = %f, loss = %f\n", epoch, w, dw, l);
 		}
 	}
-	std::cout << "Prediction before training: f(5) = " << forward(5)<<"\n";
+	std::cout << "Prediction after training: f(1000) = " << forward(1000)<<"\n";
+	std::cout << "Prediction after training: f(8) = " << forward(8)<<"\n";
+	std::cout << "Prediction after training: f(16) = " << forward(16)<<"\n";
+	std::cout << "Prediction after training: f(25) = " << forward(25)<<"\n";
+	std::cout << "Prediction after training: f(400) = " << forward(400)<<"\n";
 }
